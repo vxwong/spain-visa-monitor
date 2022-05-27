@@ -62,7 +62,7 @@ class Visa(Basic):
     def check_available_dates(self):
         self.click_el(id="VisaTypeId")
         self.click_el(xpath="//select[@id='VisaTypeId']/option[contains(text(),'{}')]".format(config.VISA_TYPE))
-        self.wait_for_secs(0)
+        self.wait_for_secs()
 
         # check date
         self.click_el(id="app_date")
@@ -73,7 +73,7 @@ class Visa(Basic):
             if nd:
                 available_dates.update(nd)
             if self.driver.find_elements_by_xpath(next_button_xpath):
-                self.wait_for_secs(0)
+                self.wait_for_secs()
                 self.click_el(xpath=next_button_xpath)
             else:
                 break
