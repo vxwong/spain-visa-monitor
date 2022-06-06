@@ -1,8 +1,8 @@
 from datetime import datetime
+
+from utils import config
 from utils.basic import Basic
 from utils.log import logger
-from utils import config
-from utils.decorators import singleton
 
 
 class Visa(Basic):
@@ -62,7 +62,7 @@ class Visa(Basic):
     def check_available_dates(self):
         self.click_el(id="VisaTypeId")
         self.click_el(xpath="//select[@id='VisaTypeId']/option[contains(text(),'{}')]".format(config.VISA_TYPE))
-        self.wait_for_secs()
+        self.wait_for_secs(0)
 
         # check date
         self.click_el(id="app_date")
@@ -73,7 +73,7 @@ class Visa(Basic):
             if nd:
                 available_dates.update(nd)
             if self.driver.find_elements_by_xpath(next_button_xpath):
-                self.wait_for_secs()
+                self.wait_for_secs(0)
                 self.click_el(xpath=next_button_xpath)
             else:
                 break
@@ -91,5 +91,6 @@ class Visa(Basic):
             for day in dates:
                 found_date = datetime.strptime(day + " " + found_month, '%d %B %Y')
                 result_dates[found_date.strftime("%d/%m/%Y")] = []
+            self.click_el(normal_dates_xpath)  # 自动点击
 
         return result_dates

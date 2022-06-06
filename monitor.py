@@ -1,9 +1,13 @@
+import os
 import time
+
 import telebot
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+
 from utils import config
 from utils.log import logger
 from visa import Visa
-from selenium import webdriver
 
 bot = telebot.TeleBot(config.BOT_TOKEN)
 
@@ -14,10 +18,12 @@ def init_driver():
     }
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_experimental_option('prefs', profile)
+    chrome_options.add_argument("--incognito")
 
     # chrome_options.add_argument("--user-data-dir=/Users/vxwong/Library/Application Support/Google/Chrome")
-    driver = webdriver.Chrome(options=chrome_options)
-    driver.implicitly_wait(10)
+    driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
+    driver.implicitly_wait(1)
+    driver.delete_all_cookies()
     return driver
 
 
@@ -33,8 +39,10 @@ def monitor():
             dates = visa.check_available_dates()
             if dates:
                 logger.info(f"DAY AVAILABLE: {dates}")
+                os.system(f"say day available {dates}")
                 bot.send_message(chat_id=config.CHAT_ID, text=f'DAY AVAILABLE: {dates}')
                 # driver.back()
+                time.sleep(120)
             else:
                 logger.info(f"NO DAY AVAILABLE..")
                 time.sleep(config.TIMEOUT)
