@@ -39,7 +39,7 @@ class Visa(Basic):
             # self.click_el(xpath="//a[text() = 'Log in']")
             element = self.driver.find_element_by_xpath("//a[contains(text(),'Log in')]")
             element.click()
-            self.wait_for_secs(5)
+            self.wait_for_secs()
             self.enter_message(config.EMAIL, name='email')
             self.wait_for_secs()
             self.enter_message(config.PASSWORD, name='password')
@@ -61,7 +61,7 @@ class Visa(Basic):
 
     def check_available_dates(self):
         self.click_el(id="VisaTypeId")
-        self.click_el(xpath="//select[@id='VisaTypeId']/option[contains(text(),'{}')]".format(config.VISA_TYPE))
+        self.click_el(xpath="//select[@id='VisaTypeId']/option[contains(text(),'{}')]".format(config.CENTER[3]))
         self.wait_for_secs(0)
 
         # check date

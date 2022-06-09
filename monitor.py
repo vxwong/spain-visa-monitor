@@ -1,15 +1,12 @@
-import os
 import time
 
-import telebot
+import pyttsx3
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 
 from utils import config
 from utils.log import logger
 from visa import Visa
-
-bot = telebot.TeleBot(config.BOT_TOKEN)
 
 
 def init_driver():
@@ -20,7 +17,6 @@ def init_driver():
     chrome_options.add_experimental_option('prefs', profile)
     chrome_options.add_argument("--incognito")
 
-    # chrome_options.add_argument("--user-data-dir=/Users/vxwong/Library/Application Support/Google/Chrome")
     driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
     driver.implicitly_wait(1)
     driver.delete_all_cookies()
@@ -34,14 +30,12 @@ def monitor():
         visa.go_to_appointment_page()
         visa.login()
         visa.go_to_book_appointment()
-        visa.select_centre('England', 'Manchester', 'Normal')
+        visa.select_centre(config.CENTER[0], config.CENTER[1], config.CENTER[2])
         while True:
             dates = visa.check_available_dates()
             if dates:
                 logger.info(f"DAY AVAILABLE: {dates}")
-                os.system(f"say day available {dates}")
-                bot.send_message(chat_id=config.CHAT_ID, text=f'DAY AVAILABLE: {dates}')
-                # driver.back()
+                pyttsx3.speak(f"say day available {dates}")
                 time.sleep(120)
             else:
                 logger.info(f"NO DAY AVAILABLE..")
@@ -53,15 +47,5 @@ def monitor():
         monitor()
 
 
-def test_notify():
-    try:
-        bot.send_message(chat_id=config.CHAT_ID, text='hello, test ok')
-    except Exception as e:
-        logger.error(
-            f'Test notify error. please make sure that you\'ve sent a message to wongs_bot if you didn\'t change the CHAT_ID in the config.\n\n {e}')
-        exit(0)
-
-
 if __name__ == "__main__":
-    test_notify()
     monitor()
