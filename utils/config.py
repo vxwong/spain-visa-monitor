@@ -1,5 +1,6 @@
 # =============== GENERAL SETTINGS ===============
 TIMEOUT = 90  # refresh page every 90s
+CLOUDFLARE_TIME_OUT = 5  # increase only if 5 seconds cannot bypass cloudflare verify
 
 # =============== VISA CENTER SELECTION ===============
 CENTER = ('England', 'Manchester', 'Normal', 'Tourism')
