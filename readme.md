@@ -71,3 +71,6 @@
     python monitor.py
     ```
    程序会自动控制一个Chrome浏览器完成自动登录、选择签证者中心，自动识别可用日期。有slot的话会直接语音提示。
+   
+5. 致谢
+特别感谢[@daddywolf](https://github.com/daddywolf)对本项目的优化和issue解答，作者维护了一个cloudflare bypass版的，感兴趣的同学可以移步[此处](https://github.com/daddywolf/spain-visa-monitor-cloudflare-bypass)。
